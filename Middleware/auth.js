@@ -1,7 +1,8 @@
+const express=require('express');
 const config=require('config');
 const jwt=require('jsonwebtoken');
 module.exports=(req,res,next)=>{
-    const token=req.header('Authorization')?.replace('Bearer ','');
+    const token= req.cookies.token;
     console.log(token)
     if(!token){
      return res.status(401).send({message:"No token provided Autheticate yourself"});
@@ -16,3 +17,4 @@ module.exports=(req,res,next)=>{
         return res.status(401).send({ message: "DInvalid or expired token." });
     }
 }
+

@@ -6,6 +6,16 @@ const Employee=require('../Models/employee');
 const Roles=require('../Models/roles');
 const Items=require('../Models/items');
 const Clients=require('../Models/clients')
+function generateTokens(payload,secret,options){
+    const token=jwt.sign(payload,secret, options);
+    
+    return token;
+}
+function generateRefreshToken(payload,secret,options){
+    const refreshToken=jwt.sign(payload,secret,options);
+    return refreshToken;
+}
+
 const employeeSchema=Joi.object({
     name:Joi.string().required(),
     email:Joi.string().required(),
@@ -33,8 +43,23 @@ if(!role){return res.status(401).send({message:"Invalid role.you may be client"}
     const employee=new Employee(req.body);
 
     await employee.save();
-const token=jwt.sign({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
-res.status(201).send({token:token}) 
+    const token=generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
+    const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshse'), {expiresIn:"5d"});
+    res.cookie('token',token,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+
+    })
+    res.cookie('refreshToken',refreshToken,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+    });
+    res.status(201).send({token:"Registered successfully"})
+
 }
 catch(err){
     res.status(500).send({err})
@@ -50,8 +75,23 @@ exports.login= async function(req,res){
     if(!(await bcrypt.compare(password,employee.password))){
         res.status(401).send({message:"Invalide credentials"})
     }
-    const token=jwt.sign({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
-res.status(200).send({token:token, you:employee}) 
+ const token=generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"})
+ const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshse'), {expiresIn:"5d"});
+ res.cookie('token',token,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+
+    });
+    res.cookie('refreshtoken',refreshToken,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+    });
+
+res.status(200).send({token:"Logged in Successfully"}) 
     }
     catch(error){
         res.status(500).send({message:error.message})

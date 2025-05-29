@@ -21,7 +21,7 @@ const EmployeeSchema=mongoose.Schema({
             message:"{VALUE} invalid gender"
         }
     },
-    id:{
+    roleId:{
         type:Number,
         required:true
     },

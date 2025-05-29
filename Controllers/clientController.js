@@ -4,6 +4,14 @@ const config=require('config');
 const Client=require('../Models/clients');
 const bcrypt=require('bcrypt');
 const Goods=require('../Models/items');
+function generateTokens(payload,secret,options){
+    const accessToken=jwt.sign(payload,secret, options);
+    return accessToken;
+}
+function generateRefreshToken(payload,secret,options){
+    const refreshToken=jwt.sign(payload,secret,options);
+    return refreshToken;
+}
 exports.register= async function (req,res){
     try{
     const clientSchema=Joi.object({
@@ -18,13 +26,30 @@ exports.register= async function (req,res){
 
     const client=new Client(req.body);
     await client.save();
-const token=jwt.sign({id:client._id},config.get('jwtsecret'),{expiresIn:"1h"});
-res.status(201).send({token:token}) 
+    const token=generateTokens({id:client._id}, config.get('jwtsecret'),{expiresIn:"1h"});
+    const refreshToken=generateRefreshToken({id:client._id,name:client.name},config.get('refreshsecrets'),{expiresIn:"5d"})
+    res.cookie('token',token,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+    });
+
+    res.cookie('refreshToken',refreshToken,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+    });
+
+
+res.status(201).send({message:"Registered succussefully"}) 
 }
 catch(err){
     res.status(500).send({err})
 }
 }
+
 exports.login= async function(req,res){
     try{
     const {name, password}=req.body;
@@ -35,8 +60,23 @@ exports.login= async function(req,res){
     if(!(await bcrypt.compare(password,client.password))){
         res.status(401).send({message:"Invalide credentials"})
     }
-    const token=jwt.sign({id:client._id},config.get('jwtsecret'),{expiresIn:"1h"});
-res.status(200).send({token:token, you:client}) 
+    const token=generateTokens({id:client._id}, config.get('jwtsecret'),{expiresIn:"1h"});
+    const refreshToken=generateRefreshToken({id:client._id,name:client.name},config.get('refreshsecrets'),{expiresIn:"5d"})
+     res.cookie('token',token,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+    });
+    res.cookie('token',refreshToken,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax',
+        maxAge:3600000
+    });
+
+res.status(201).send({message:"Loggen in succussefully"}) 
+
     }
     catch(error){
         res.status(500).send({message:error.message})

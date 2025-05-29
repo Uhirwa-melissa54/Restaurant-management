@@ -44,20 +44,15 @@ if(!role){return res.status(401).send({message:"Invalid role.you may be client"}
 
     await employee.save();
     const token=generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
-    const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshse'), {expiresIn:"5d"});
-    res.cookie('token',token,{
-        httpOnly:true,
-        secure:false,
-        sameSite:'lax',
-        maxAge:3600000
-
-    })
+    const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshsecret'), {expiresIn:"5d"});
+    res.json({token:token});
     res.cookie('refreshToken',refreshToken,{
         httpOnly:true,
         secure:false,
-        sameSite:'lax',
+        sameSite:'Strict',
         maxAge:3600000
     });
+    //is it possible
     res.status(201).send({token:"Registered successfully"})
 
 }
@@ -65,8 +60,16 @@ catch(err){
     res.status(500).send({err})
 }
 }
+const loginSchema=Joi.object(
+    {
+        name:Joi.string().required(),
+        password:Joi.string().required()
+    }
+)
 exports.login= async function(req,res){
     try{
+     const {error}=loginSchema.validate(req.body);
+    if(error){ return res.status(400).send({message:error.details[0].message})};   
     const {name, password}=req.body;
     const employee= await Employee.findOne({name:name});
     if(!employee ){
@@ -77,17 +80,11 @@ exports.login= async function(req,res){
     }
  const token=generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"})
  const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshse'), {expiresIn:"5d"});
- res.cookie('token',token,{
-        httpOnly:true,
-        secure:false,
-        sameSite:'lax',
-        maxAge:3600000
-
-    });
+res.json({token:token})
     res.cookie('refreshtoken',refreshToken,{
         httpOnly:true,
         secure:false,
-        sameSite:'lax',
+        sameSite:'Strict',
         maxAge:3600000
     });
 
@@ -130,7 +127,7 @@ exports.getClients=async function (req,res){
     res.status(200).send(clients)
 
 }
-
+//security checks
 exports.updateItems=async function (req,res){
     const item=await Items.findOneAndUpdate({name:req.params.name},req.body,{new:true});
     if(!item){

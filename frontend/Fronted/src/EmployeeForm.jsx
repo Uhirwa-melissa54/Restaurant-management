@@ -9,13 +9,20 @@ function EmployeeForm() {
     email: "",
     age: "",
     gender: "",
-    location: "",
+    roleId:"",
     password: ""
   });
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(userCredentials);
+    try{
+    const res=await axios.post('http://localhost:5000/employee/register',userCredentials);
+     console.log(userCredentials);
+     console.log(res.data.message)
+    }
+    catch(err){
+        console.log('error submitting the form')
+    }
   }
 
   function handleChange(e) {
@@ -127,11 +134,12 @@ function EmployeeForm() {
             fullWidth
             margin="normal"
           />
-          <TextField
+         
+           <TextField
             type='text'
-            placeholder='Location'
-            name="location"
-            value={userCredentials.location}
+            placeholder='Your roleId'
+            name="roleId"
+            value={userCredentials.roleId}
             onChange={handleChange}
             fullWidth
             margin="normal"

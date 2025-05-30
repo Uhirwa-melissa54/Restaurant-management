@@ -33,32 +33,50 @@ const itemsSchema=Joi.object({
     component:Joi.string().required(),
     associate:Joi.string().required(),
 })
+
+
 exports.register= async function (req,res){
     try{
   
     const {error}=employeeSchema.validate(req.body);
     if(error){ return res.status(400).send({message:error.details[0].message})};
 const role=await Roles.findOne({id:req.body.roleId});
-if(!role){return res.status(401).send({message:"Invalid role.you may be client"})}
+// if(!role){return res.status(401).send({message:"Invalid role.you may be client"})}
     const employee=new Employee(req.body);
 
     await employee.save();
     const token=generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
     const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshsecret'), {expiresIn:"5d"});
-    res.json({token:token});
-    res.cookie('refreshToken',refreshToken,{
-        httpOnly:true,
-        secure:false,
-        sameSite:'Strict',
-        maxAge:3600000
-    });
-    //is it possible
-    res.status(201).send({token:"Registered successfully"})
+   res
+  .cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'Strict',
+    maxAge: 3600000,
+  })
+  .status(201)
+  .json({ token, message: "Registered successfully" });
 
 }
 catch(err){
     res.status(500).send({err})
 }
+}
+
+
+exports.Refresh= (req,res)=>{
+    const refreshToken=req.cookies.refreshToken;
+    if(!refreshToken) res.status(401).send({message:"Authenticate yourself"});
+    try{
+        jwt.verify(token,config.get('refreshsecrets'))
+         
+        const token =generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
+        res.json({token})
+    }
+    catch(err){
+        console.log(err);
+    }
+
 }
 const loginSchema=Joi.object(
     {

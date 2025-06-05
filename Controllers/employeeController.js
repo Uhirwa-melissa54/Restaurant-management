@@ -41,7 +41,7 @@ exports.register= async function (req,res){
     const {error}=employeeSchema.validate(req.body);
     if(error){ return res.status(400).send({message:error.details[0].message})};
 const role=await Roles.findOne({id:req.body.roleId});
-// if(!role){return res.status(401).send({message:"Invalid role.you may be client"})}
+ if(!role){return res.status(401).send({message:"Invalid role.you may be client"})}
     const employee=new Employee(req.body);
 
     await employee.save();

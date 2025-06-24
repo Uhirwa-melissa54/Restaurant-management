@@ -62,6 +62,7 @@ function Home() {
           </Button>
 
               </Box>
+             
 
                <Box  sx={{
     display: 'flex',
@@ -103,17 +104,19 @@ function Home() {
 <Box>
                         <Typography variant='h5'  sx={{textAlign: 'center' ,mt:5}}>Our Story, Your Experience</Typography>
                         <Box display='flex' justifyContent='space-between' sx={{}}>
-                             <Box  sx={{  maxWidth: '60%',height:'200px',mt:3 }}>
+                             <Box  sx={{  maxWidth: '60%',height:'250px',mt:5}}>
             <img src={sitting}  style={{ width: '300px', height: '100%', objectFit:'cover',overflow:'hidden',borderTopRightRadius: 8 }}  />
           </Box>
 
-           <Box sx={{ width:'50%',mt:5 }}>
+           <Box sx={{ width:'50%',mt:8,display:'flex', flexDirection:'column' }}>
+            <Box>
  <Typography variant='h5'>Who are we?</Typography>
                 <Typography variant='h8' >We are a fine dining restaurant dedicated to exceptional taste and elegant ambiance.
 Our chefs craft every dish with passion and fresh, local ingredients.
 Whether it's a romantic dinner or a special celebration, we make it memorable.
 </Typography>
-
+</Box>
+<Box>
   <Button
             component={Link}
             to="/employee"
@@ -122,7 +125,7 @@ Whether it's a romantic dinner or a special celebration, we make it memorable.
             sx={{
               backgroundColor: 'black',
               color: 'white',
-             
+              size:"small" ,
              mt:2,
               textTransform: 'none',
               fontWeight: 'bold',
@@ -133,6 +136,7 @@ Whether it's a romantic dinner or a special celebration, we make it memorable.
           >
             Learn More
           </Button>
+          </Box>
 
 
                 </Box>
@@ -140,55 +144,28 @@ Whether it's a romantic dinner or a special celebration, we make it memorable.
                         </Box>
 
                     </Box>
-                    <Box sx={{m:50}}>
-                         <Typography variant='h5'  sx={{textAlign: 'center' ,mt:5}}>Our Exquisite Menu</Typography>
-                         <Typography variant='h5'  sx={{textAlign: 'center' }}>Our Menu does not exclude anyone or make them feel left out.</Typography>
-                         <Box sx={{
-    display: 'grid',
-    gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-    gap: 4,
-    mt: 4,
-  }}>
-
-      <Box sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
-    <img src={speciesOne} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-    <Box sx={{ p: 2 }}>
-      <Typography variant="subtitle1" fontWeight="600">Species One</Typography>
-      <Typography variant="body2" color="text.secondary">$25</Typography>
-    </Box>
-  </Box>
-
-  <Box sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
-    <img src={speciesTwo} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-    <Box sx={{ p: 2 }}>
-      <Typography variant="subtitle1" fontWeight="600">Species Two</Typography>
-      <Typography variant="body2" color="text.secondary">$30</Typography>
-    </Box>
-  </Box>
-
-  <Box sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
-    <img src={speciesThree} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-    <Box sx={{ p: 2 }}>
-      <Typography variant="subtitle1" fontWeight="600">Species Three</Typography>
-      <Typography variant="body2" color="text.secondary">$28</Typography>
-    </Box>
-  </Box>
-
-  <Box sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
-    <img src={speciesFour} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-    <Box sx={{ p: 2 }}>
-      <Typography variant="subtitle1" fontWeight="600">Species Four</Typography>
-      <Typography variant="body2" color="text.secondary">$35</Typography>
-    </Box>
-  </Box>
-
+                    <Box>
+                    <Box sx={{mt:8,backgroundColor:'rgba(252, 204, 209, 0.4)',width:'100%',textAlign: 'center' }}>
+                         <Typography variant='h5'  sx={{pt:3,mb:1}}>Our Exquisite Menu</Typography>
+                         <Typography variant='h8' >Our Menu does not exclude anyone or make them feel left out.<br></br> We have  vegetarian food that is healthy</Typography>
+                         <Box display='flex'    alignItems= 'center'
+    justifyContent= 'center' sx={{mt:'6'}}>
+                            <Button size='small'  variant='contained'sx={{textTransform:'none',color:'grey', '&:hover': {
+                backgroundColor: '#f0f0f0',
+              }, }}>All Dishes</Button>
+                            <Button size='small'>Starters</Button>
+                            <Button size='small'>Main</Button>
+                            <Button size='small'>Desserts</Button>
+                           
                          </Box>
+                        
 
 
                     </Box>
-
                     </Box>
+
                     
+                     </Box>
 
                 </Box>
 

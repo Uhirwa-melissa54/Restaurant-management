@@ -26,26 +26,25 @@ exports.register= async function (req,res){
 
     const client=new Client(req.body);
     await client.save();
-    const token=generateTokens({id:client._id}, config.get('jwtsecret'),{expiresIn:"1h"});
-    const refreshToken=generateRefreshToken({id:client._id,name:client.name},config.get('refreshsecrets'),{expiresIn:"5d"})
-    res.cookie('token',token,{
+    const token=generateTokens({id:client._id,name:client.name,email:client.email}, config.get('jwtsecret'),{expiresIn:"15min"});
+    const refreshToken=generateRefreshToken({id:client._id,name:client.name},config.get('refreshsecret'),{expiresIn:"5d"});
+     res.cookie('refreshToken',refreshToken,{
         httpOnly:true,
         secure:false,
         sameSite:'lax',
         maxAge:3600000
     });
 
-    res.cookie('refreshToken',refreshToken,{
-        httpOnly:true,
-        secure:false,
-        sameSite:'lax',
-        maxAge:3600000
-    });
+    res.status(200).send({
+        accessToken:token,
+        message:"Registration successfull"
+    })
 
+   
 
-res.status(201).send({message:"Registered succussefully"}) 
 }
 catch(err){
+    console.error("error occured",err)
     res.status(500).send({err})
 }
 }
@@ -61,13 +60,7 @@ exports.login= async function(req,res){
         res.status(401).send({message:"Invalide credentials"})
     }
     const token=generateTokens({id:client._id}, config.get('jwtsecret'),{expiresIn:"1h"});
-    const refreshToken=generateRefreshToken({id:client._id,name:client.name},config.get('refreshsecrets'),{expiresIn:"5d"})
-     res.cookie('token',token,{
-        httpOnly:true,
-        secure:false,
-        sameSite:'lax',
-        maxAge:3600000
-    });
+    const refreshToken=generateRefreshToken({id:client._id,name:client.name},config.get('refreshsecret'),{expiresIn:"5d"})
     res.cookie('token',refreshToken,{
         httpOnly:true,
         secure:false,
@@ -75,7 +68,12 @@ exports.login= async function(req,res){
         maxAge:3600000
     });
 
-res.status(201).send({message:"Loggen in succussefully"}) 
+     res.status(200).send({
+        accessToken:token,
+        message:"Registration successfull"
+    });
+
+
 
     }
     catch(error){

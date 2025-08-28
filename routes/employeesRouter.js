@@ -1,8 +1,8 @@
 const express=require('express');
 const employeeRouter=express.Router();
-const employeeController=require('../Controllers/employeeController');
-const auth=require("../Middleware/auth");
-const admin=require("../Middleware/admin");
+const employeeController=require('../Backend/Controllers/employeeController');
+const auth=require("../Backend/Middleware/auth");
+const admin=require("../Backend/Middleware/admin");
 
 
 employeeRouter.post('/register', employeeController.register);

@@ -47,15 +47,13 @@ const role=await Roles.findOne({id:req.body.roleId});
     await employee.save();
     const token=generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
     const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshsecret'), {expiresIn:"5d"});
-   res
-  .cookie('refreshToken', refreshToken, {
+   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: false,
     sameSite: 'Strict',
     maxAge: 3600000,
   })
-  .status(201)
-  .json({ token, message: "Registered successfully" });
+  res.status(201).json({ token:token, message: "Registered successfully" });
 
 }
 catch(err){

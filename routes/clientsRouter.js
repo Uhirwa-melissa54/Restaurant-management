@@ -1,7 +1,7 @@
 const express=require('express');
 const clientRouter=express.Router();
-const clientController=require('../Controllers/clientController');
-const auth=require("../Middleware/auth");
+const clientController=require('../Backend/Controllers/clientController');
+const auth=require("../Backend/Middleware/auth");
 
 clientRouter.post('/register', clientController.register);
 clientRouter.post('/login', clientController.login);

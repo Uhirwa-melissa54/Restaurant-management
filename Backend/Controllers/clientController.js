@@ -4,6 +4,7 @@ const config=require('config');
 const Client=require('../Models/clients');
 const bcrypt=require('bcrypt');
 const Goods=require('../Models/items');
+const Order=require("../Models/orders");
 function generateTokens(payload,secret,options){
     const accessToken=jwt.sign(payload,secret, options);
     return accessToken;
@@ -101,4 +102,29 @@ exports.getItemsByCategory=async function(req,res){
     }
     res.status(200).send(goods)
 
+}
+
+exports.makeOrder=async function(req,res){
+    try{
+        const Joi = require('joi');
+
+const orderSchema = Joi.object({
+  meals: Joi.array().items(Joi.string()),
+  drinks: Joi.array().items(Joi.string()),
+  totalCost: Joi.number().required(),
+  customerName: Joi.string().required(),
+  orderDate: Joi.date()
+})
+.or('meals', 'drinks');
+const {error}=orderSchema.validate(req.body);
+if(error){ return res.status(400).send({message:error.details[0].message})};
+const order=new Order(req.body);
+await order.save();
+res.status(201).send({message:"Order placed successfully"})
+}
+    catch(error){
+        console.log(err)
+     res.status(500).send({err})
+    }
+    
 }

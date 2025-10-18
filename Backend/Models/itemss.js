@@ -46,7 +46,7 @@ const items = [
       ingredient: "Lettuce",
       component: "Vitamins",
       associate: "Grilled chicken"
-    },
+    },  
     {
       name: "Ratatouille",
       category: "French",

@@ -6,7 +6,9 @@ const auth=require("../Backend/Middleware/auth");
 clientRouter.post('/register', clientController.register);
 clientRouter.post('/login', clientController.login);
 clientRouter.get('/items', auth,clientController.getItems);
-clientRouter.get('/items/:name', auth,clientController.getItemsByName);
+clientRouter.get('/items/name/:name', auth,clientController.getItemsByName);
+clientRouter.get('/items/category/:category', clientController.getItemsByCategory);
+
 
 
 module.exports=clientRouter;

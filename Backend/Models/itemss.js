@@ -1,7 +1,7 @@
 const items = [
     {
       name: "Sushi",
-      type: "Seafood",
+      category: "Seafood",
       cost: "$$$",
       ingredient: "Fish",
       component: "Protein",
@@ -9,7 +9,7 @@ const items = [
     },
     {
       name: "Pasta Carbonara",
-      type: "Italian",
+      category: "Italian",
       cost: "$$",
       ingredient: "Bacon",
       component: "Fats",
@@ -17,7 +17,7 @@ const items = [
     },
     {
       name: "Tandoori Chicken",
-      type: "Indian",
+      category: "Indian",
       cost: "$$",
       ingredient: "Chicken",
       component: "Protein",
@@ -25,7 +25,7 @@ const items = [
     },
     {
       name: "Falafel Wrap",
-      type: "Middle Eastern",
+      category: "Middle Eastern",
       cost: "$",
       ingredient: "Chickpeas",
       component: "Fiber",
@@ -33,7 +33,7 @@ const items = [
     },
     {
       name: "Grilled Salmon",
-      type: "Seafood",
+      category: "Seafood",
       cost: "$$$",
       ingredient: "Salmon",
       component: "Omega-3",
@@ -41,7 +41,7 @@ const items = [
     },
     {
       name: "Caesar Salad",
-      type: "Salad",
+      category: "Salad",
       cost: "$$",
       ingredient: "Lettuce",
       component: "Vitamins",
@@ -49,7 +49,7 @@ const items = [
     },
     {
       name: "Ratatouille",
-      type: "French",
+      category: "French",
       cost: "$$",
       ingredient: "Zucchini",
       component: "Vitamins",
@@ -57,7 +57,7 @@ const items = [
     },
     {
       name: "Beef Tacos",
-      type: "Mexican",
+      category: "Mexican",
       cost: "$$",
       ingredient: "Beef",
       component: "Protein",
@@ -65,7 +65,7 @@ const items = [
     },
     {
       name: "Pho",
-      type: "Vietnamese",
+      category: "Vietnamese",
       cost: "$$",
       ingredient: "Noodles",
       component: "Carbohydrates",
@@ -73,7 +73,7 @@ const items = [
     },
     {
       name: "Mushroom Risotto",
-      type: "Italian",
+      category: "Italian",
       cost: "$$",
       ingredient: "Mushrooms",
       component: "Vitamins",

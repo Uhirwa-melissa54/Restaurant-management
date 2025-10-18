@@ -57,9 +57,9 @@ exports.login= async function(req,res){
         res.status(404).send({message:"Username not registered"});
     };
     if(!(await bcrypt.compare(password,client.password))){
-        res.status(401).send({message:"Invalide credentials"})
+        res.status(401).send({message:"Invalid Password"})
     }
-    const token=generateTokens({id:client._id}, config.get('jwtsecret'),{expiresIn:"1h"});
+    const accesstoken=generateTokens({id:client._id,name:client.name,email:client.email}, config.get('jwtsecret'),{expiresIn:"15min"});
     const refreshToken=generateRefreshToken({id:client._id,name:client.name},config.get('refreshsecret'),{expiresIn:"5d"})
     res.cookie('token',refreshToken,{
         httpOnly:true,
@@ -69,8 +69,8 @@ exports.login= async function(req,res){
     });
 
      res.status(200).send({
-        accessToken:token,
-        message:"Registration successfull"
+        accessToken:accesstoken,
+        message:"Logged in successfull"
     });
 
 
@@ -92,4 +92,13 @@ exports.getItemsByName=async function(req,res){
         res.status(404).send("We do not have that item")
     }
     res.status(200).send(goods)
+}
+exports.getItemsByCategory=async function(req,res){
+    const category=req.params.category
+     const goods = await Goods.find({type:new RegExp(`^${category}$`, 'i')});
+        if(!goods){
+        res.status(404).send("There isn't scuh category")
+    }
+    res.status(200).send(goods)
+
 }

@@ -34,6 +34,16 @@ const itemsSchema=Joi.object({
     associate:Joi.string().required(),
 })
 
+const rolexSchema = Joi.object({
+    name: Joi.string().required(),
+    type: Joi.string().required(),
+    cost: Joi.string().required(),
+    ingredient: Joi.string().required(),
+    component: Joi.string().required(),
+    associate: Joi.string().required(),
+    role: Joi.string().valid('admin', 'user', 'manager').required(), // added role
+});
+
 
 exports.register= async function (req,res){
     try{
@@ -45,7 +55,7 @@ const role=await Roles.findOne({id:req.body.roleId});
     const employee=new Employee(req.body);
 
     await employee.save();
-    const token=generateTokens({roleId:employee.roleId},config.get('jwtsecret'),{expiresIn:"1h"});
+    const token=generateTokens({roleId:employee.roleId,name:employee.name,age:employee.age},config.get('jwtsecret'),{expiresIn:"15min"});
     const refreshToken=generateRefreshToken({roleId:employee.roleId,name:employee.name},config.get('refreshsecret'), {expiresIn:"5d"});
    res.cookie('refreshToken', refreshToken, {
     httpOnly: true,

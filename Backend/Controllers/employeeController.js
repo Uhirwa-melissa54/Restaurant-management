@@ -153,7 +153,6 @@ exports.getClients=async function (req,res){
     res.status(200).send(clients)
 
 }
-//security checks
 exports.updateItems=async function (req,res){
     const item=await Items.findOneAndUpdate({name:req.params.name},req.body,{new:true});
     if(!item){

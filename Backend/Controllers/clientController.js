@@ -52,8 +52,8 @@ catch(err){
 
 exports.login= async function(req,res){
     try{
-    const {name, password}=req.body;
-    const client= await Client.findOne({name:name});
+    const {email, password}=req.body;
+    const client= await Client.findOne({email:email});
     if(!client ){
         res.status(404).send({message:"Username not registered"});
     };
